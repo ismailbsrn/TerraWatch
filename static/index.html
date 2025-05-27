@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Soil Moisture Monitor</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+        }
+
+        .value {
+            font-size: 2rem;
+            color: #007acc;
+        }
+
+        .timestamp {
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <canvas id="moistureChart" width="700" height="400"></canvas>
+        <h1>Soil Moisture</h1>
+        <div id="moisture" class="value">--</div>
+        <div id="sensor">Sensor: --</div>
+        <div id="timestamp" class="timestamp">--</div>
+
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const API_URL = "http://4.233.56.135:5000/api/latest";
+
+        const ctx = document.getElementById('moistureChart').getContext('2d');
+        let moistureChart;
+
+        async function fetchAndRenderChart() {
+            try {
+                const res = await fetch("http://4.233.56.135:5000/api/all");
+                const data = await res.json();
+
+                const last20 = data.slice(0, 20).reverse();
+
+                const labels = last20.map(d => new Date(Number(d.timestamp) * 1000).toLocaleTimeString());
+                const values = last20.map(d => d.moisture);
+
+                if (moistureChart) {
+                    moistureChart.data.labels = labels;
+                    moistureChart.data.datasets[0].data = values;
+                    moistureChart.update();
+                } else {
+                    moistureChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Soil Moisture %',
+                                data: values,
+                                borderColor: 'rgba(0, 122, 204, 1)',
+                                backgroundColor: 'rgba(0, 122, 204, 0.2)',
+                                fill: true,
+                                tension: 0.3,
+                                pointRadius: 3
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    title: {
+                                        display: true,
+                                        text: 'Moisture (%)'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Time'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+            } catch (err) {
+                console.error('Error fetching chart data:', err);
+            }
+        }
+
+        fetchAndRenderChart();
+
+        setInterval(fetchAndRenderChart, 2000);
+
+        async function fetchMoisture() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+
+                document.getElementById("moisture").textContent = data.moisture + " %";
+                document.getElementById("sensor").textContent = "Sensor: " + data.sensor_id;
+                document.getElementById("timestamp").textContent = "Time: " + new Date(Number(data.timestamp) * 1000).toLocaleString();
+            } catch (err) {
+                console.error("Failed to fetch:", err);
+            }
+        }
+
+        fetchMoisture();
+        setInterval(fetchMoisture, 2000);
+    </script>
+</body>
+
+</html>
