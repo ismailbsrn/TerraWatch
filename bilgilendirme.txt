@@ -1,0 +1,14 @@
+Açıklamada belirttiğiniz şekilde herkes tüm projeler video çekmiştir ve herkesin github repositorysi ayrıdır.
+Herkesin final raporu genel itibarıyla aynı olsa da kapatk ve linkler kısmı farklıdır.
+Herkes kendi dökümanına sadece kendine ait olan linkleri eklemiştir.
+Herkes kendi vize ve final raporlarını kendi repositorylerine yüklemiştir.
+
+
+Projeler,
+• “Proje 1: Çi_ Katmanlı Web Uygulaması (Web API + Frontend)” için Enacap
+• “Proje 2: Gerçek Zamanlı Veri Akışı ve İşleme (IoT veya WebSocket
+Uygulaması)” için TerraWatch
+• “Proje 4: E-Ticaret Uygulaması (Otomakk Ölçeklendirme ve Yönekm)” için
+hazır olarak kurulan PrestaShop
+• “Proje 5: Blockchain Tabanlı Uygulama Geliştirme” için ChainTract olacak şekilde hazırlanmıştır.
+
