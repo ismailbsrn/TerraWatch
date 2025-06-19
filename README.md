@@ -3,7 +3,7 @@
 
 **TerraWatch** is a real-time soil moisture monitoring system built for smart agriculture. It simulates sensor data, transmits it over MQTT, bridges it to HTTP, and visualizes the data via a simple web interface using cloud infrastructure.
 
-🎥 **Demo Video:** [Watch on YouTube](https://youtu.be/EwifHPq33WA?si=AFu8vBvWQqzRdqJq)
+🎥 **Demo Video:** [Watch on YouTube](https://youtu.be/tlEEEY0bLcE)
 
 ## Features
 
